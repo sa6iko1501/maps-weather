@@ -11,13 +11,13 @@ import (
 
 const WEATHER_URL string = "https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&units=metric&appid={API key}"
 
-type Request struct {
+type WeatherRequest struct {
 	Latitude   float64
 	Longtitude float64
 	Api        string
 }
 
-type Response struct {
+type WeatherResponse struct {
 	Weather []struct {
 		Description string `json:"description"`
 	} `json:"weather"`
@@ -35,7 +35,7 @@ func GetWeatherUrl(lat string, lon string, apiKey string) string {
 	return result
 }
 
-func GetWeatherNow(r Request) (result Response, error error) {
+func GetWeatherNow(r WeatherRequest) (result WeatherResponse, error error) {
 	lat := r.Latitude
 	lon := r.Longtitude
 	url := GetWeatherUrl(strconv.FormatFloat(lat, 'f', -1, 64), strconv.FormatFloat(lon, 'f', -1, 64), r.Api)
@@ -47,7 +47,7 @@ func GetWeatherNow(r Request) (result Response, error error) {
 
 	status := resp.StatusCode
 	if status != 200 {
-		return Response{}, fmt.Errorf("error wrong status: expected: 200, actual: %v", status)
+		return WeatherResponse{}, fmt.Errorf("error wrong status: expected: 200, actual: %v", status)
 	}
 
 	body, err := io.ReadAll(resp.Body)

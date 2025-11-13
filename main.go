@@ -14,13 +14,23 @@ func main() {
 	flag.Parse()
 
 	if city != "Default" && apiKey != "Default" {
-		var req api.Request = api.Request{Latitude: 43.2, Longtitude: 23.2, Api: apiKey}
-		var response api.Response
-		response, err := api.GetWeatherNow(req)
+		var geoReq api.GeoLocRequest = api.GeoLocRequest{City: city, Api: apiKey}
+		var geoResp api.GeoLocResponse
+		geoResp, err := api.GetGeoLoc(geoReq)
 		if err != nil {
 			fmt.Println(err)
 		} else {
-			fmt.Printf("CITY: %v\nOVERALL_WEATHER: %v\nTEMPERATURE: %v C\nFEELS_LIKE: %v C\n", city, response.Weather[0].Description, response.Main.Temp, response.Main.FeelsLike)
+			if (geoResp == api.GeoLocResponse{}) {
+				fmt.Printf("no city with the name : %s was found", city)
+				return
+			}
+			var weatherReq api.WeatherRequest = api.WeatherRequest{Latitude: geoResp.Latitude, Longtitude: geoResp.Longtitude, Api: apiKey}
+			weatherResp, err := api.GetWeatherNow(weatherReq)
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Printf("COUTRY: %v\nState: %v\nCITY: %v\nOVERALL_WEATHER: %v\nTEMPERATURE: %v C\nFEELS_LIKE: %v C\n", geoResp.Country, geoResp.State, city, weatherResp.Weather[0].Description, weatherResp.Main.Temp, weatherResp.Main.FeelsLike)
+			}
 		}
 	} else {
 
