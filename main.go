@@ -29,7 +29,7 @@ func main() {
 			if err != nil {
 				fmt.Println(err)
 			} else {
-				fmt.Printf("COUTRY: %v\nState: %v\nCITY: %v\nOVERALL_WEATHER: %v\nTEMPERATURE: %v C\nFEELS_LIKE: %v C\n", geoResp.Country, geoResp.State, city, weatherResp.Weather[0].Description, weatherResp.Main.Temp, weatherResp.Main.FeelsLike)
+				fmt.Printf("COUNTRY: %v\nState: %v\nCITY: %v\nOVERALL_WEATHER: %v\nTEMPERATURE: %v C\nFEELS_LIKE: %v C\n", geoResp.Country, geoResp.State, city, weatherResp.Weather[0].Description, weatherResp.Main.Temp, weatherResp.Main.FeelsLike)
 			}
 		}
 	} else {
